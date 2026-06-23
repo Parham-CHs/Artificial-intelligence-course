@@ -1,181 +1,108 @@
-# AI Course Project 5: News Article Clustering and Analysis(Using K-Means Clustering, DBSCAN, Hierarchical Clustering)
+# Assignment CA5: Text Clustering & Unsupervised Learning
 
 ## Overview
+This assignment implements **unsupervised learning techniques** for text clustering on a news article dataset. The goal is to group similar news articles into meaningful clusters using three different clustering algorithms: K-Means, DBSCAN, and Hierarchical Clustering. The project demonstrates the complete pipeline from text preprocessing to feature extraction, clustering, and evaluation.
 
-This project explores unsupervised learning techniques for clustering news articles into meaningful groups based on their semantic content. The objective is to automatically discover hidden structures within textual data and evaluate the effectiveness of different clustering algorithms on a real-world news dataset.
+## Learning Objectives
+- Apply **unsupervised learning** algorithms for text classification
+- Implement **text preprocessing** techniques (stemming, lemmatization, stopword removal)
+- Extract meaningful features using **Sentence Transformers** (all-MiniLM-L6-v2)
+- Compare and evaluate clustering algorithms using **silhouette scores** and **homogeneity scores**
+- Visualize high-dimensional clusters using **PCA** dimensionality reduction
+- Understand the strengths and weaknesses of different clustering approaches
 
-The project combines modern Natural Language Processing (NLP) techniques with classical clustering algorithms to transform raw text into meaningful vector representations and organize documents into coherent clusters.
+## Key Concepts & Algorithms
 
----
+### Clustering Algorithms Implemented
+1. **K-Means Clustering**
+   - Partition-based algorithm
+   - Optimal K determined via **Elbow Method**
+   - Tested with K values ranging from 3 to 8
 
-## Objectives
+2. **DBSCAN (Density-Based Spatial Clustering of Applications with Noise)**
+   - Density-based clustering
+   - Can identify arbitrary-shaped clusters
+   - Handles noise points effectively
+   - Parameter tuning: eps (0.5 - 3.0) and min_samples (5 - 34)
 
-* Preprocess and clean textual news data.
-* Generate semantic embeddings using Sentence Transformers.
-* Apply multiple clustering algorithms to group similar articles.
-* Compare clustering performance using quantitative evaluation metrics.
-* Visualize high-dimensional text embeddings through dimensionality reduction techniques.
-* Analyze the strengths and weaknesses of different clustering approaches.
+3. **Agglomerative Hierarchical Clustering**
+   - Bottom-up hierarchical approach
+   - Creates a hierarchy of clusters
+   - Tested with K values from 3 to 8
 
----
+### Feature Extraction
+- **Sentence Transformers** (all-MiniLM-L6-v2)
+- **TF-IDF Vectorization** (alternative approach)
+
+### Dimensionality Reduction
+- **PCA (Principal Component Analysis)** for 2D visualization
+
+### Evaluation Metrics
+- **Silhouette Score**: Measures cluster cohesion and separation (-1 to +1)
+- **Homogeneity Score**: Compares clustering results with ground truth labels (when available)
 
 ## Dataset
+- **Source**: Daily news articles in English from multiple newsgroups
+- **Format**: CSV file with document texts
+- **Content**: News articles from various categories
+- **Size**: Multi-document dataset (exact size depends on dataset.csv)
 
-The dataset consists of English-language news articles collected from multiple news categories.
+## Implementation Details
 
-Each document contains textual content and an associated news category used for evaluation purposes.
+### Tech Stack
+- **Language**: Python 3.11
+- **Libraries**:
+  - `pandas` - Data manipulation
+  - `numpy` - Numerical operations
+  - `scikit-learn` - Clustering, PCA, metrics
+  - `sentence-transformers` - Feature extraction
+  - `nltk` - Text preprocessing (stopwords, stemming, lemmatization)
+  - `matplotlib` - Visualization
+- **Environment**: Jupyter Notebook / Google Colab
 
----
+### Preprocessing Pipeline
+1. Lowercasing text
+2. Removing punctuation and special characters (`\n`, `\r`)
+3. Stopword removal using NLTK's English stopword list
+4. Stemming (Porter Stemmer)
+5. Lemmatization (WordNet Lemmatizer)
 
-## Text Preprocessing
+### Feature Extraction Workflow
+Raw Text → Preprocessing → Sentence Embeddings (384-dim) → PCA Reduction (2D) → Clustering
 
-Several preprocessing techniques were explored to improve text quality before feature extraction:
 
-* Stopword removal
-* Removal of special characters and unnecessary whitespace
-* Text normalization
-* Stemming experiments
-* Lemmatization experiments
+## Results & Evaluation
 
-The impact of different preprocessing strategies was analyzed and compared.
+### Silhouette Scores Comparison
+| Method | Silhouette Score | Observations |
+|--------|------------------|--------------|
+| K-Means | 0.091 | Best with K = 4 |
+| DBSCAN | 0.041 | Sensitive to eps/min_samples |
+| Hierarchical | 0.085 | Consistent performance |
 
----
+### Cluster Quality Analysis
+- Extracted 3 sample documents from each cluster for qualitative evaluation
+- Visualized clusters in 2D space using PCA
+- Compared cluster distributions across algorithms
 
-## Feature Extraction
 
-Instead of relying on traditional bag-of-words representations, semantic embeddings were generated using:
+### Prerequisites
+pip install pandas numpy scikit-learn sentence-transformers nltk matplotlib
 
-* Sentence Transformers
-* Model: `all-MiniLM-L6-v2`
+## **Challenges & Learnings**
+1. Choosing optimal hyperparameters for DBSCAN (eps and min_samples)
 
-This transformer-based model converts each news article into a dense vector representation that captures semantic meaning and contextual relationships between words and sentences.
+2. Determining the right K for K-Means despite clear elbow
 
----
+3. Handling noise points in DBSCAN clusters
 
-## Clustering Algorithms
+## Key Takeaways
+- K-Means: Works best for well-separated, spherical clusters
 
-Three clustering methods were implemented and evaluated:
+- DBSCAN: Excels at finding arbitrary-shaped clusters and handling noise
 
-### 1. K-Means Clustering
+- Hierarchical: Provides insight into data structure but can be computationally expensive
 
-* Partition-based clustering algorithm
-* Number of clusters determined using the Elbow Method
-* Fast and efficient for large datasets
+- Feature quality (Sentence Embeddings) significantly impacts clustering performance
 
-### 2. DBSCAN
-
-* Density-based clustering algorithm
-* Capable of detecting outliers
-* Does not require specifying the number of clusters beforehand
-
-### 3. Hierarchical Clustering
-
-* Builds nested clusters using a tree-like structure
-* Provides insight into relationships between clusters
-* Useful for exploratory data analysis
-
----
-
-## Dimensionality Reduction
-
-Because transformer embeddings have high dimensionality, Principal Component Analysis (PCA) was applied to reduce dimensions before visualization.
-
-PCA enabled:
-
-* Visualization of clusters in two-dimensional space
-* Better understanding of cluster separation
-* Comparison of clustering quality across algorithms
-
----
-
-## Evaluation Metrics
-
-The clustering results were evaluated using:
-
-### Silhouette Score
-
-Measures how similar a sample is to its own cluster compared to other clusters.
-
-Higher values indicate better cluster separation.
-
-### Homogeneity Score
-
-Measures whether each cluster contains data points belonging primarily to a single true class.
-
-Higher values indicate purer clusters.
-
----
-
-## Experimental Workflow
-
-1. Load and preprocess news articles.
-2. Generate semantic embeddings using Sentence Transformers.
-3. Apply K-Means clustering.
-4. Apply DBSCAN clustering.
-5. Apply Hierarchical Clustering.
-6. Reduce embedding dimensions using PCA.
-7. Visualize clustering results.
-8. Compute evaluation metrics.
-9. Compare clustering performance.
-10. Analyze representative samples from each cluster.
-
----
-
-## Technologies Used
-
-* Python
-* NumPy
-* Pandas
-* Scikit-Learn
-* Sentence Transformers
-* Matplotlib
-* Seaborn
-* Jupyter Notebook
-
----
-
-## Key AI Concepts
-
-* Unsupervised Learning
-* Text Representation Learning
-* Semantic Embeddings
-* Clustering
-* Density-Based Learning
-* Hierarchical Learning
-* Dimensionality Reduction
-* Natural Language Processing (NLP)
-
----
-
-## Results
-
-The project demonstrates how modern transformer-based embeddings significantly improve text clustering quality compared to traditional keyword-based approaches.
-
-Comparative analysis of K-Means, DBSCAN, and Hierarchical Clustering highlights the trade-offs between cluster quality, scalability, and robustness to noise.
-
----
-
-## Learning Outcomes
-
-Through this project, I gained practical experience in:
-
-* Natural Language Processing pipelines
-* Sentence Transformer embeddings
-* Unsupervised machine learning
-* Clustering evaluation techniques
-* Dimensionality reduction and visualization
-* Comparative analysis of machine learning algorithms
-
----
-
-## Future Improvements
-
-* Experiment with larger transformer models
-* Apply UMAP or t-SNE for visualization
-* Explore topic modeling approaches
-* Fine-tune embeddings for domain-specific datasets
-* Investigate advanced clustering methods such as HDBSCAN
-
----
-
-Part of the Artificial Intelligence Course Projects Series.
+- PCA visualization helps intuit cluster quality but loses some information
