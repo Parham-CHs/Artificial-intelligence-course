@@ -67,16 +67,6 @@ An implementation of the Minimax algorithm with Alpha-Beta pruning for playing t
   - `pandas` - Data logging
 - **Environment**: Jupyter Notebook
 
-### Project Structure
-genetic2.ipynb # Main genetic algorithm notebook
-target_images/
-├── eagle.png # Sample target image
-└── ... # Other sample images
-GenImg/ # Output directory
-├── fittest_X.png # Best images at generation X
-└── data_cross.csv # Fitness evolution data
-
-
 ## 📈 Results & Analysis
 - Fitness values progressively decrease (improve) over generations
 - Visual comparison between reconstructed and target images
