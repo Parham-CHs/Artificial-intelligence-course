@@ -1,4 +1,4 @@
-# Assignment CA5: Text Clustering & Unsupervised Learning
+# Assignment CA5: Text Clustering & Unsupervised Learning (Using K-Means Clustering, DBSCAN, Hierarchical Clustering)
 
 ## Overview
 This assignment implements **unsupervised learning techniques** for text clustering on a news article dataset. The goal is to group similar news articles into meaningful clusters using three different clustering algorithms: K-Means, DBSCAN, and Hierarchical Clustering. The project demonstrates the complete pipeline from text preprocessing to feature extraction, clustering, and evaluation.
